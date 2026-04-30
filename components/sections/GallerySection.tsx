@@ -1,20 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { X } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionTemplate } from 'framer-motion';
 import { galleryItems } from '@/lib/data';
 
 export function GallerySection() {
   const [selectedGalleryIndex, setSelectedGalleryIndex] = useState<number | null>(null);
+  const subtitleRef   = useRef<HTMLParagraphElement>(null);
+  const { scrollYProgress: subtitleProgress } = useScroll({ target: subtitleRef, offset: ['start 90%', 'end 60%'] });
+  const subtitleFill  = useTransform(subtitleProgress, [0, 1], [0, 100]);
+  const subtitleGradient = useMotionTemplate`linear-gradient(to right, #D88820 ${subtitleFill}%, #4B5563 ${subtitleFill}%)`;
 
   return (
     <section className="py-20 px-6 bg-white">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-4xl font-bold text-gray-900 mb-4 text-right">실행 현장</h2>
-        <p className="text-xl text-gray-600 text-right mb-16 max-w-2xl ml-auto">
+        <motion.p
+          ref={subtitleRef}
+          className="text-xl font-medium text-right mb-16 max-w-2xl ml-auto"
+          style={{ backgroundImage: subtitleGradient, backgroundClip: 'text', WebkitBackgroundClip: 'text', color: 'transparent' }}
+        >
           전 세계에서 진행되는 지속가능한 소비와 생산 프로젝트들
-        </p>
+        </motion.p>
 
         <div className="flex overflow-hidden rounded-xl" style={{ height: '480px' }}>
           {galleryItems.map((item, index) => {

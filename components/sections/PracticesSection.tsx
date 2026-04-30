@@ -1,20 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Globe, Users, Target } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useMotionTemplate } from 'framer-motion';
 import { PracticeRow } from '@/components/PracticeRow';
 
 export function PracticesSection() {
   const [showPractices, setShowPractices] = useState(false);
+  const subtitleRef   = useRef<HTMLParagraphElement>(null);
+  const { scrollYProgress: subtitleProgress } = useScroll({ target: subtitleRef, offset: ['start 90%', 'end 60%'] });
+  const subtitleFill  = useTransform(subtitleProgress, [0, 1], [0, 100]);
+  const subtitleGradient = useMotionTemplate`linear-gradient(to right, #D88820 ${subtitleFill}%, #4B5563 ${subtitleFill}%)`;
 
   return (
     <section className="py-30 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="text-4xl font-bold text-gray-900 mb-4 text-right">우리가 할 수 있는 일</h2>
-        <p className="text-xl text-gray-600 text-right mb-10 max-w-2xl ml-auto">
+        <motion.p
+          ref={subtitleRef}
+          className="text-xl font-medium text-right mb-10 max-w-2xl ml-auto"
+          style={{ backgroundImage: subtitleGradient, backgroundClip: 'text', WebkitBackgroundClip: 'text', color: 'transparent' }}
+        >
           개인, 기업, 정부가 함께 만드는 지속가능한 미래
-        </p>
+        </motion.p>
 
         {!showPractices && (
           <div className="flex justify-center">

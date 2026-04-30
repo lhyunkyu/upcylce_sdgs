@@ -2,13 +2,17 @@
 
 import { useState, useRef } from 'react';
 import { X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useMotionTemplate } from 'framer-motion';
 import { challenges } from '@/lib/data';
 
 export function ChallengesSection() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [modalChallenge, setModalChallenge] = useState<{ image: string; title: string; description: string } | null>(null);
-  const marqueeRef = useRef<HTMLDivElement>(null);
+  const marqueeRef    = useRef<HTMLDivElement>(null);
+  const subtitleRef   = useRef<HTMLParagraphElement>(null);
+  const { scrollYProgress: subtitleProgress } = useScroll({ target: subtitleRef, offset: ['start 90%', 'end 60%'] });
+  const subtitleFill  = useTransform(subtitleProgress, [0, 1], [0, 100]);
+  const subtitleGradient = useMotionTemplate`linear-gradient(to right, #D88820 ${subtitleFill}%, #4B5563 ${subtitleFill}%)`;
 
   const pauseMarquee  = () => { if (marqueeRef.current) marqueeRef.current.style.animationPlayState = 'paused'; };
   const resumeMarquee = () => { if (marqueeRef.current) marqueeRef.current.style.animationPlayState = 'running'; };
@@ -18,9 +22,13 @@ export function ChallengesSection() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-4xl font-bold text-gray-900 mb-4 text-left">우리가 풀어야 할 과제</h2>
-          <p className="text-xl text-gray-600 text-left mb-16 max-w-2xl">
+          <motion.p
+            ref={subtitleRef}
+            className="text-xl font-medium text-left mb-16 max-w-2xl"
+            style={{ backgroundImage: subtitleGradient, backgroundClip: 'text', WebkitBackgroundClip: 'text', color: 'transparent' }}
+          >
             이미지에 마우스를 올리면 자세한 설명을 확인할 수 있습니다
-          </p>
+          </motion.p>
         </div>
 
         <div
