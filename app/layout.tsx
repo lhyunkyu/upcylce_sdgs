@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { ScrollProgressBar } from '@/components/ScrollProgressBar'
 import { Geist, Geist_Mono, Do_Hyeon } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
@@ -42,6 +43,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${doHyeon.variable} font-sans antialiased`}>
+        <ScrollProgressBar />
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
