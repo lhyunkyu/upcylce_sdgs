@@ -10,6 +10,7 @@ type StatCardProps = {
     label: string;
     icon: React.ReactNode;
     severity: number;
+    severityBasis?: string;
   };
   index: number;
 };
@@ -38,7 +39,9 @@ export function StatCard({ stat, index }: StatCardProps) {
           transition={{ duration: 1.1, ease: 'easeOut', delay: index * 0.08 }}
         />
       </div>
-      <p className="text-right text-sm text-brand mt-1 font-semibold">심각도 {stat.severity}%</p>
+      <p className="text-right text-sm text-brand mt-1 font-semibold">
+        심각도 {stat.severity}%{stat.severityBasis && <span className="text-gray-400 font-normal ml-1">({stat.severityBasis})</span>}
+      </p>
     </div>
   );
 }

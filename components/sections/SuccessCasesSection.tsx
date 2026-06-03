@@ -1,28 +1,19 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { motion, useScroll, useTransform, useMotionTemplate } from 'framer-motion';
 import { successCases } from '@/lib/data';
 
 export function SuccessCasesSection() {
   const [currentCaseIndex, setCurrentCaseIndex] = useState(0);
-  const subtitleRef   = useRef<HTMLParagraphElement>(null);
-  const { scrollYProgress: subtitleProgress } = useScroll({ target: subtitleRef, offset: ['start 90%', 'end 60%'] });
-  const subtitleFill  = useTransform(subtitleProgress, [0, 1], [0, 100]);
-  const subtitleGradient = useMotionTemplate`linear-gradient(to right, #D88820 ${subtitleFill}%, #4B5563 ${subtitleFill}%)`;
 
   return (
     <section className="py-20 px-6 bg-white">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-4xl font-bold text-gray-900 mb-4 text-left">해외의 성공 사례</h2>
-        <motion.p
-          ref={subtitleRef}
-          className="text-xl font-medium text-left mb-12 max-w-2xl"
-          style={{ backgroundImage: subtitleGradient, backgroundClip: 'text', WebkitBackgroundClip: 'text', color: 'transparent' }}
-        >
+        <p className="text-xl text-brand text-left mb-12 max-w-2xl">
           전 세계 각국의 지속가능한 소비와 생산 혁신 사례
-        </motion.p>
+        </p>
 
         <div className="relative h-[500px] md:h-[700px] rounded-2xl overflow-hidden shadow-2xl">
           <div className="relative h-full">
@@ -45,6 +36,25 @@ export function SuccessCasesSection() {
                   <h4 className="text-brand text-2xl font-semibold mb-6">{caseItem.title}</h4>
                   <p className="text-gray-100 text-lg leading-relaxed">{caseItem.description}</p>
                 </div>
+                {(caseItem as any).source && (
+                  <div className="absolute bottom-6 right-6 z-20">
+                    {(caseItem as any).sourceUrl ? (
+                      <a
+                        href={(caseItem as any).sourceUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-white/60 hover:text-white transition-colors bg-black/30 px-2 py-1 rounded"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        출처: {(caseItem as any).source} ↗
+                      </a>
+                    ) : (
+                      <span className="text-xs text-white/60 bg-black/30 px-2 py-1 rounded">
+                        출처: {(caseItem as any).source}
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -63,7 +73,7 @@ export function SuccessCasesSection() {
             <ChevronRight className="w-8 h-8" />
           </button>
 
-          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-20 flex gap-2">
+          <div className="absolute bottom-14 left-1/2 transform -translate-x-1/2 z-20 flex gap-2">
             {successCases.map((_, index) => (
               <button
                 key={index}

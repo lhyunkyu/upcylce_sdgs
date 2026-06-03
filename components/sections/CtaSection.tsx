@@ -44,13 +44,16 @@ export function CtaSection() {
         >
           오늘 당신의 선택이 내일의 지구를 결정합니다.
         </motion.p>
-        <motion.button
+        <motion.a
+          href="https://www.index.go.kr/unity/potal/sdg/12/SDGIndicator.do"
+          target="_blank"
+          rel="noopener noreferrer"
           className="font-bold py-4 px-10 rounded-lg text-lg inline-flex items-center justify-center gap-2"
           style={{ backgroundColor: ctaBtnBg, color: ctaBtnColor }}
         >
           더 알아보기
           <ArrowRight className="w-5 h-5" />
-        </motion.button>
+        </motion.a>
       </div>
     </motion.section>
   );

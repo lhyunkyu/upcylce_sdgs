@@ -1,28 +1,20 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { Globe, Users, Target } from 'lucide-react';
-import { motion, AnimatePresence, useScroll, useTransform, useMotionTemplate } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { PracticeRow } from '@/components/PracticeRow';
 
 export function PracticesSection() {
   const [showPractices, setShowPractices] = useState(false);
-  const subtitleRef   = useRef<HTMLParagraphElement>(null);
-  const { scrollYProgress: subtitleProgress } = useScroll({ target: subtitleRef, offset: ['start 90%', 'end 60%'] });
-  const subtitleFill  = useTransform(subtitleProgress, [0, 1], [0, 100]);
-  const subtitleGradient = useMotionTemplate`linear-gradient(to right, #D88820 ${subtitleFill}%, #4B5563 ${subtitleFill}%)`;
 
   return (
-    <section className="py-30 bg-white overflow-hidden">
+    <section className="py-20 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="text-4xl font-bold text-gray-900 mb-4 text-right">우리가 할 수 있는 일</h2>
-        <motion.p
-          ref={subtitleRef}
-          className="text-xl font-medium text-right mb-10 max-w-2xl ml-auto"
-          style={{ backgroundImage: subtitleGradient, backgroundClip: 'text', WebkitBackgroundClip: 'text', color: 'transparent' }}
-        >
+        <p className="text-xl text-brand text-right mb-10 max-w-2xl ml-auto">
           개인, 기업, 정부가 함께 만드는 지속가능한 미래
-        </motion.p>
+        </p>
 
         {!showPractices && (
           <div className="flex justify-center">
@@ -39,56 +31,35 @@ export function PracticesSection() {
       <AnimatePresence>
         {showPractices && (
           <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: {
-                opacity: 1,
-                transition: { duration: 0.5, staggerChildren: 0.4, delayChildren: 0.2 },
-              },
-            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
             className="mt-10"
           >
-            <motion.div
-              variants={{
-                hidden: { opacity: 0, y: 40 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
-              }}
-            >
-              <PracticeRow
-                title="개인의 실천"
-                items={['일회용 제품 대신 재사용 제품 선택', '음식물 쓰레기 최소화하기', '환경 친화적 제품 구매 우선', '에너지 절감 생활습관 실천', '재활용 분류 철저히 하기']}
-                icon={<div className="w-full h-full rounded-full bg-green-100 flex items-center justify-center"><Users className="w-10 h-10 text-green-600" /></div>}
-                checkColor="text-green-500"
-              />
-            </motion.div>
-            <motion.div
-              variants={{
-                hidden: { opacity: 0, y: 40 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
-              }}
-            >
-              <PracticeRow
-                title="기업의 책임"
-                items={['순환 경제 모델 도입', '포장재 최소화 및 친환경 소재 사용', '공급망 투명성 확보', '사원 교육 및 인식 개선', '저탄소 생산 공정 전환']}
-                icon={<div className="w-full h-full rounded-full bg-blue-100 flex items-center justify-center"><Globe className="w-10 h-10 text-blue-600" /></div>}
-                checkColor="text-blue-500"
-              />
-            </motion.div>
-            <motion.div
-              variants={{
-                hidden: { opacity: 0, y: 40 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
-              }}
-            >
-              <PracticeRow
-                title="정부의 정책"
-                items={['순환 경제 법제 정비', '플라스틱 규제 강화', '재활용 인프라 투자', '친환경 기업 세제 혜택', '국제 협력 강화']}
-                icon={<div className="w-full h-full rounded-full bg-brand-light flex items-center justify-center"><Target className="w-10 h-10 text-brand" /></div>}
-                checkColor="text-brand"
-              />
-            </motion.div>
+            <PracticeRow
+              title="개인의 실천"
+              items={['일회용 제품 대신 재사용 제품 선택', '음식물 쓰레기 최소화하기', '환경 친화적 제품 구매 우선', '에너지 절감 생활습관 실천', '재활용 분류 철저히 하기']}
+              icon={<div className="w-full h-full rounded-full bg-green-100 flex items-center justify-center"><Users className="w-10 h-10 text-green-600" /></div>}
+              checkColor="text-green-500"
+              source="UNEP — SDG 12 Responsible Consumption"
+              sourceUrl="https://www.unep.org/explore-topics/sustainable-development-goals/why-do-sustainable-development-goals-matter/goal-12"
+            />
+            <PracticeRow
+              title="기업의 책임"
+              items={['순환 경제 모델 도입', '포장재 최소화 및 친환경 소재 사용', '공급망 투명성 확보', '사원 교육 및 인식 개선', '저탄소 생산 공정 전환']}
+              icon={<div className="w-full h-full rounded-full bg-blue-100 flex items-center justify-center"><Globe className="w-10 h-10 text-blue-600" /></div>}
+              checkColor="text-blue-500"
+              source="Ellen MacArthur Foundation — Circular Economy"
+              sourceUrl="https://www.ellenmacarthurfoundation.org/topics/circular-economy-introduction/overview"
+            />
+            <PracticeRow
+              title="정부의 정책"
+              items={['순환 경제 법제 정비', '플라스틱 규제 강화', '재활용 인프라 투자', '친환경 기업 세제 혜택', '국제 협력 강화']}
+              icon={<div className="w-full h-full rounded-full bg-brand-light flex items-center justify-center"><Target className="w-10 h-10 text-brand" /></div>}
+              checkColor="text-brand"
+              source="OECD — Extended Producer Responsibility"
+              sourceUrl="https://www.oecd.org/environment/waste/extended-producer-responsibility.htm"
+            />
             <div className="border-t border-gray-200" />
           </motion.div>
         )}

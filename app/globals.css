@@ -1,6 +1,12 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+@keyframes wave-weight {
+  0%   { font-variation-settings: 'wght' 100; }
+  50%  { font-variation-settings: 'wght' 900; }
+  100% { font-variation-settings: 'wght' 100; }
+}
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
